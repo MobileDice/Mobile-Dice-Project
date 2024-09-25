@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anim_ShowMainSettin
+  m_Name: Anim_ShowMainSetting
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0

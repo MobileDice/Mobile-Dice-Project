@@ -6,11 +6,13 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField] private AudioSource _Music;
     [SerializeField] private GameObject _PrefabAudioSource;
     [SerializeField] private int _AudioPoolLength = 10; // Default value
     private int _IndexAudioPool;
     private List<AudioPoolObject> _AudioPool;
-    public float _MainVolume = 0.5f;
+    public float _MainSfxVolume = 0.5f;
+    public float _MainMusicVolume = 0.2f;
     
     public SfxClass _ZoomSFX;
     public SfxClass _SwordHit;
@@ -30,8 +32,7 @@ public class AudioManager : MonoBehaviour
         }
         
         _Instance = this;
-
-        DontDestroyOnLoad(gameObject);
+        
 
         _AudioPool = new List<AudioPoolObject>(_AudioPoolLength);
 
@@ -54,10 +55,15 @@ public class AudioManager : MonoBehaviour
         poolObject._AudioSource.clip = Sfx._AudioClip;
         float randomPitch = Random.Range(Sfx._MinRandomPitch, Sfx._MaxRandomPitch);
         poolObject._AudioSource.pitch = randomPitch;
-        poolObject._AudioSource.volume = _MainVolume * Sfx._RelativeVolume;
+        poolObject._AudioSource.volume = _MainSfxVolume * Sfx._RelativeVolume;
         poolObject._AudioSource.Play();
 
         StartCoroutine(DeactivateAfterPlay(poolObject));
+    }
+
+    public void SpawnClickSfx()
+    {
+        SpawnSound(_ClickSfx);
     }
 
     private IEnumerator DeactivateAfterPlay(AudioPoolObject poolObject)
@@ -79,6 +85,21 @@ public class AudioManager : MonoBehaviour
             _AudioSource = audioSource;
         }
     }
+
+    public void SetSfxVolume(float newValue)
+    {
+        _MainSfxVolume = newValue;
+    }
+
+    [SerializeField] private float RelativeMusicValue;
+    
+    public void SetMusicVolume(float newValue)
+    {
+        float realValue = newValue * RelativeMusicValue;
+        _MainMusicVolume = realValue;
+        _Music.volume = realValue;
+    }
+    
     
     [Serializable]
     public class SfxClass
